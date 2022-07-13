@@ -8,7 +8,7 @@ const { validateFields,
 const { getProcessesIntance,
         updatedIntanceDad,
         getIntanceTask,
-        updatedIntance } = require('../controllers/processinstance');
+        updatedIntanceHjo } = require('../controllers/processinstance');
 
 const { validExistProductByID,
     validExistProcessByPrefijo,
@@ -26,10 +26,11 @@ router.get('/:id',[
     validateFields
 ],getIntanceTask);
 
-router.patch('/:id', [
+//preuba
+router.patch('/:id/Hijo/:idhijo', [
    check('id', 'Invalid process ID').isMongoId(),
     validateFields
-], updatedIntance );
+], updatedIntanceHjo);
 
 router.patch('/statusprocess/:id', [
     check('id', 'Invalid process ID').isMongoId(),

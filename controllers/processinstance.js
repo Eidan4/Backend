@@ -38,47 +38,31 @@ const updatedIntanceDad = async (req, res = response) => {
 
 //Ver como hacer la actualizacion de la start_finish
 
-const updatedIntance = async (req, res = response) => {
-    const { id }= req.params;
-    const {process} = req.body;
-    res.json(process.tasks); 
-    const processintance = await ProccessIntance.find(
-        {"process.tasks._id": id }, {"process.tasks.start_finish.$": true} 
-    ).exec((err, processi) => {        
-        ProccessIntance.findByIdAndUpdate(processi,start_finish).exec((err, process)=>{
-            if(err) throw err; 
-        })
-    })
-}
-
-//     //Por revisar  actualizacion estado tarea
-//     // const {id}= req.params;
-//     // var query = {"process.tasks._id": id };
-//     // var newvalue = { set: {"process.tasks.start_finish":"Cambio"}};
-//     // const processintancedad = await ProccessIntance.update(
-//     //     {"process.tasks._id":id},{"process.tasks.start_finish.$": "Cambio"})
-//     //     // query,newvalue,function(err,res){
-//     //     //     if(err) throw err;
-//     //     //     console.log(res);
-//     //     // }
-//     // // ).clone().catch(function(err){ console.log(err)})
-//     //     // .populate('start_finish', 'name');
-//     // res.json({processintancedad})
-
-//     const {id}= req.params;
-//     const idtasks = req.body.process.tasks.find(itemInArray => itemInArray.id === id)
-//     console.log(idtasks);
-
-//     // const myArray = [{id: 1, name:'pipi'}, {id: 2, name:'popo'}];
-//     // const id = 2;
-
-//     // const variableOne = myArray.filter(itemInArray => itemInArray.id === id);
-//     // console.log(variableOne);
-    
-// };
+const updatedIntanceHjo = async (req, res = response) => {}
+//     const {id}=req.params;
+//     const {idhijo} = req.params;
+//     // ProccessIntance.findById(id).exec((error,inventario)=>{
+//     //     let lista2 = inventario.process.tasks;
+//     //     for(let i= 0; i < lista2.length; i++){
+//     //         let lista = [];
+//     //         let respuesta = lista2[i]._id;
+//     //         let contenido = lista2[i]
+//     //         if(respuesta == idhijo){
+//     //             lista.push(contenido);
+//     //             modificar={start_finish:(lista.start_finish="cambiar")}
+//     //             ProccessIntance.findByIdAndUpdate({"process.tasks._id": id },modificar).exec((error,inventario)=>{
+//     //                 res.json(inventario);
+//     //             })
+//     //         }
+//     //     }
+//     // })
+//     // ProccessIntance.find({"process.tasks._id":idhijo},{"process.tasks.start_finish.$": true}).exec((error,inventario)=>{
+//     //     res.json(inventario);
+//     })
+// }
 
 module.exports ={
-    updatedIntance,
+    updatedIntanceHjo,
     getProcessesIntance,
     updatedIntanceDad,
     getIntanceTask

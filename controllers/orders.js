@@ -87,7 +87,8 @@ const getOrders = async(req, res = response) => {
 
     const [total, order] = await Promise.all([
         Order.count(),
-        Order.find()
+        //se hace que la ultima orden salga de primera
+        (await Order.find()).reverse()
     ]);
 
     res.json({
