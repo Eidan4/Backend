@@ -39,7 +39,7 @@ const updatedIntanceDad = async (req, res = response) => {
 //Ver como hacer la actualizacion de la start_finish
 
 const updatedIntanceHjo = async (req, res = response) => {}
-//     const {id}=req.params;
+//     const {id}=req.params;    
 //     const {idhijo} = req.params;
 //     // ProccessIntance.findById(id).exec((error,inventario)=>{
 //     //     let lista2 = inventario.process.tasks;

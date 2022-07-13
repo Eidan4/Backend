@@ -48,7 +48,11 @@ const createProcess = async (req, res = response) => {
 
 const getProcesses = async(req, res = response) => {
 
-    const process = await Process.find();
+    const process = await Promise.all([
+        Process.find()
+            .populate('product', 'name')
+            .populate('tasks.dependent tasks.task', 'name')
+    ]);
 
     res.json({
         process
@@ -64,6 +68,7 @@ const getProcessByPrefijo = async (req, res = response) => {
     const product = await Product.findOne({ prefijo: prefijoUpperCase });
 
     const process = await Process.findOne({ product: product.id });
+
 
     res.json(process);
 }
