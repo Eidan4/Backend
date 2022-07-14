@@ -47,15 +47,15 @@ const getTaskStation =async(req, res = response) => {
 
     const {id} = req.params; 
    
-    //verificacion
-    // if(id){
-    //     const ids = await Task1.findById(id);
-    //     if(!ids){
-    //         return res.status(404).jsonp({
-    //             msg: 'Invalid Task'
-    //         });
-    //     }
-    // }
+    verificacion
+    if(id){
+        const ids = await Task1.findById(id);
+        if(!ids){
+            return res.status(404).json({
+                msg: 'Invalid Task'
+            });
+        }
+    }
 
     let lista = [];
     let lista2 = [];

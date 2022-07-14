@@ -63,7 +63,7 @@ const createOrder = async(req, res = response) => {
 
     for (let i = 0; i < process[0].tasks.length; i++) {
 
-        const task = process[0].tasks[i].id;
+        const task = process[0].tasks[i].task;
 
         tasks = [ ...tasks, {task}];
     }
