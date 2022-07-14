@@ -1,4 +1,3 @@
-const { findOneAndUpdate } = require('../models/processInstance');
 const ProccessIntance = require('../models/processInstance');
 
 
@@ -43,10 +42,9 @@ const updatedIntanceHjo = async (req, res = response) => {
     const {id}=req.params;    
     const {idhijo} = req.params;
     const {process} = req.body;
-    // res.json({process});
-    // var query = {"process.tasks._id":idhijo}
-    // res.json(query);
-    // console.log(query);    
+    ProccessIntance.update({'process.tasks._id':idhijo},{'$set':{
+        'process.tasks.start_finish':'update'
+    }})
     
 }
 

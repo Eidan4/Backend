@@ -47,7 +47,7 @@ const getTaskStation =async(req, res = response) => {
 
     const {id} = req.params; 
    
-    verificacion
+    //verificacion
     if(id){
         const ids = await Task1.findById(id);
         if(!ids){
