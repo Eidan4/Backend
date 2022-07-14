@@ -16,7 +16,7 @@ const ScreenTaskSchema = Schema({
     prioridad: {
         type: Boolean, 
         required: [true, 'Prioridad is required']
-    }
+    } 
 });
 
 ScreenTaskSchema.toJSON=function(){
