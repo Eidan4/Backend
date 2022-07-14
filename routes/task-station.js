@@ -3,7 +3,8 @@ const { check } = require('express-validator');
 
 const { createTaskStation,
         getTaskStation,
-        updateTaskStation} = require('../controllers/task-station');
+        updateTaskStation,
+        getTaskTodos} = require('../controllers/task-station');
 
 const { validExistStation, validExistStationById } = require('../helpers/validators');
 
@@ -25,5 +26,8 @@ router.get('/stations/:id',[
 router.get('/UpdateTaskStation/:id',[
     validateFields
 ],updateTaskStation);
+
+router.get('/tareas/',[
+],getTaskTodos)
 
 module.exports = router;

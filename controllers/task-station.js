@@ -130,6 +130,15 @@ const getTaskStation =async(req, res = response) => {
 //     }
 // }
 
+const getTaskTodos = async (req, res= response) => {
+    const lista = await Task1.find({},{"name":1,"station":1,"zone":1,"operarios":1})
+        .populate('station', 'station')
+        .populate('zone', 'zone')
+        .populate('operarios', 'name')
+        .populate('estandarizacion','estandarizacion')
+    res.json(lista)
+    
+}
 
 const updateTaskStation = async(req, res=response) => {
     const {id} = req.params;
@@ -209,4 +218,4 @@ const log = async (req, res=response) => {
     }
 }
 
-module.exports = {createTaskStation,getTaskStation,updateTaskStation};
+module.exports = {createTaskStation,getTaskStation,updateTaskStation,getTaskTodos};
