@@ -24,7 +24,7 @@ class Server {
             productsInventory: '/api/productsInventory',
             inventorySubProduct: '/api/InventorySubProduct',
             taskstation: '/api/taskstation',
-            television:'/api/television',
+            // television:'/api/television',
         };
 
         this.connectDB();
@@ -60,7 +60,7 @@ class Server {
         this.app.use(this.path.productsInventory,require('./../routes/productsInventory'));
         this.app.use(this.path.inventorySubProduct, require('./../routes/inventorySubProduct'));
         this.app.use(this.path.taskstation, require('../routes/task-station'));
-        this.app.use(this.path.television, require('../routes/screenTask'));
+        // this.app.use(this.path.television, require('../routes/screenTask'));
     }
 
 
