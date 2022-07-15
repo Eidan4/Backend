@@ -7,6 +7,7 @@ const Order= require("../models/order");
 const Product = require('../models/product');
 const ProccessIntance = require('../models/processInstance');
 const { response } = require("express");
+const taskStation = require("../models/task-station");
 
 
 const createTaskStation = async (req, res = response)=>{
@@ -56,32 +57,45 @@ const getTaskStation =async(req, res = response) => {
             });
         }
     }
+    
 
     let lista = [];
     let lista2 = [];
-    const processintance = await ProccessIntance.find({"process.tasks.task": id }).exec((error,inventario)=>{
-        for(let i=0; i<inventario.length; i++) {
-            lista2.push(inventario[i].order);
-            if(inventario.length === lista2.length){
-                for(let j=0; j<lista2.length; j++) {
-                    buscar = lista2[j];
-                    Order.findOne(buscar).exec((error,inventario)=>{
-                        if(error) {
-                            res.json("No se encontro ninguna Orden con esa Tarea")
-                        }
-                        lista.push(inventario);
-                        if(lista2.length === lista.length){
-                            res.json(lista);  
-                        }
-                    })
-                }
-            }  
-        }
-    });
 
-    if(!processintance){
-        res.json("No se encontro esta tarea en ningun proceso");
+    try {
+        // const processintance =    
+        const time = setTimeout(() => {
+            ProccessIntance.find({"process.tasks.task": id }).exec((error,inventario)=>{
+                if(inventario.length == 0){
+                    return res.status(404).json("No se encontro ninguna proceso intance con esta tarea")
+                }
+                for(let i=0; i<inventario.length; i++) {
+                    lista2.push(inventario[i].order);
+                    if(inventario.length === lista2.length){
+                        for(let j=0; j<lista2.length; j++) {
+                            buscar = lista2[j];
+                            Order.findOne(buscar).exec((error,inventario)=>{
+                                    if(error) {
+                                        res.json("No se encontro ninguna Orden con esa Tarea") 
+                                    }
+                                        lista.push(inventario);
+                                    if(lista2.length === lista.length){
+                                        res.json(lista);  
+                                    }
+                                })
+                            }
+                        }  
+                }
+            });
+
+        }, 1000);
+
+
     }
+    catch (error) {
+      res.json("Error no se encontro")  
+    }
+    
 }
 
 const getTaskTodos = async (req, res= response) => {
