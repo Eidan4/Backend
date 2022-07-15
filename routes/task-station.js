@@ -27,7 +27,7 @@ router.get('/UpdateTaskStation/:id',[
     validateFields
 ],updateTaskStation);
 
-router.get('/tareas/',[
+router.get('/tareas',[
 ],getTaskTodos)
 
 module.exports = router;

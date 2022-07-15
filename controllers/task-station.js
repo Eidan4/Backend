@@ -60,14 +60,15 @@ const getTaskStation =async(req, res = response) => {
     let lista = [];
     let lista2 = [];
     const processintance = await ProccessIntance.find({"process.tasks.task": id }).exec((error,inventario)=>{
-        if(error) throw error;
         for(let i=0; i<inventario.length; i++) {
             lista2.push(inventario[i].order);
             if(inventario.length === lista2.length){
                 for(let j=0; j<lista2.length; j++) {
                     buscar = lista2[j];
                     Order.findOne(buscar).exec((error,inventario)=>{
-                        if(error) throw error;
+                        if(error) {
+                            res.json("No se encontro ninguna Orden con esa Tarea")
+                        }
                         lista.push(inventario);
                         if(lista2.length === lista.length){
                             res.json(lista);  
@@ -76,59 +77,12 @@ const getTaskStation =async(req, res = response) => {
                 }
             }  
         }
-    })
-    
-    //Se puede unir las dos pero la cuestion es que se duplicarioan el valor de tareas
+    });
 
-    // Funcion con el id de la orden trae las tarea y orden principal
-    // const {id} = req.params; 
-    // const order = await Order.findById(id);
-    // const prefijo = order.prefijo;
-    // const prefijoUpperCase = prefijo.toUpperCase();
-    // const product = await Product.findOne({ prefijo: prefijoUpperCase });
-    // const process = await Pro.findOne({ product: product.id });
-    // const busqueda = process.tasks;
-    // let mapeo = busqueda.map(function(obj){
-    //     let rObj = {};
-    //     rObj[obj.task]=true;
-    //     return obj.task;
-    // })
-    // // console.log(mapeo);
-    // lista = []; 
-    // listaTareas= [];
-
-    // function getStations(mapeo,order){
-    //     for(let i=0; i<mapeo.length; i++){
-    //         let buscar = mapeo[i];
-    //         let tareas = Task1.findById(buscar, function(err,inventario){
-    //             const respuesta = inventario;
-    //             lista.push(respuesta);
-    //             if(mapeo.length === lista.length){
-    //                 lista.push(order);
-    //                 res.json(lista);
-    //             }
-                
-    //         })
-    //     }
-    // }
-    
-    // getStations(mapeo,order);
+    if(!processintance){
+        res.json("No se encontro esta tarea en ningun proceso");
+    }
 }
-
-// const getOperario = async (req, res = response)=>{
-//     const {id} = req.params;
-//     const {numerodeidentidad} = req.body;
-
-//     try {
-        
-//     } catch (error) {
-//         console.log(error);
-
-//         return res.status(500).json({
-//             msg:'Invalid Numero ed identidad'
-//         })
-//     }
-// }
 
 const getTaskTodos = async (req, res= response) => {
     const lista = await Task1.find({},{"name":1,"station":1,"zone":1,"operarios":1})

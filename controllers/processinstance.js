@@ -18,7 +18,9 @@ const getIntanceTask = async (req, res=response) => {
     const processintance = await ProccessIntance.find(
         {"process.tasks._id": id }, {"process.tasks.$": true} 
         )
-
+     if(!processintance){
+        res.json("No se encontro ningun proceso con esa Tarea")
+     }
     res.json({
         processintance
     });
@@ -42,10 +44,15 @@ const updatedIntanceHjo = async (req, res = response) => {
     const {id}=req.params;    
     const {idhijo} = req.params;
     const {process} = req.body;
-    ProccessIntance.update({'process.tasks._id':idhijo},{'$set':{
+    const prueba = ProccessIntance.findByIdAndUpdate({'process.tasks._id':idhijo},{'$set':{
         'process.tasks.start_finish':'update'
-    }})
-    
+    }}).exec((error,inventario)=>{
+        res.json(inventario);
+    })
+    //Error
+    if(!prueba) {
+        res.json("No se pudo iniciar")
+    }
 }
 
 //No actualiza pero agrega el body y borra el resto (Puede servir en cualquier en una ocasion)
