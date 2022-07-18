@@ -9,7 +9,7 @@ const ScreenTaskSchema = Schema({
         type: String,
         required: [true, 'Descripcion is required']
     },
-    campo: {
+    screen: {
         type: String,
         required: [true, 'Campo is required']
     },

@@ -8,14 +8,14 @@ const createScreen = async (req, res=response) => {
         const titulo = req.body.titulo;
         const {descripcion,campo,prioridad}= req.body;
 
-        const screen = new Screen({titulo,descripcion,campo,prioridad});
+        const screen = new Screen({titulo,descripcion,prioridad,screen});
 
         await screen.save();
 
         const screens = await Screen.findById(screen.id)
                                     .populate('titulo','titulo')
                                     .populate('descripcion','descripcion')
-                                    .populate('campo','campo')
+                                    .populate('screen','screen')
                                     .populate('prioridad','prioridad')
 
         res.json(screens);
@@ -55,11 +55,11 @@ const updateScreen = async (req, res = response)=>{
     }
 
     let titulo = req.body.titulo;
-    let {descripcion,campo,prioridad} = req.body;
+    let {descripcion,prioridad,screen} = req.body;
 
-    const screen = await Screen.findByIdAndUpdate(id ,{titulo,descripcion,campo,prioridad},{new: true});
+    const screenTask = await Screen.findByIdAndUpdate(id ,{titulo,descripcion,prioridad,screen},{new: true});
 
-    res.json(screen);
+    res.json(screenTask);
 }
 
 const deleteScreen = async (req, res = response)=>{
