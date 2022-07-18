@@ -73,7 +73,7 @@ const updateTask = async(req, res = response) => {
 
     const { id } = req.params;
 
-    const { name, description, station, zone, operarios } = req.body;
+    const { name, description, station, zone, operarios, estandarizacion} = req.body;
 
     if ( station ) {
         const stations = await Station.findById(station);
@@ -108,7 +108,7 @@ const updateTask = async(req, res = response) => {
         }
     }
 
-    const task = await Task.findByIdAndUpdate(id, { name, description, station, zone, operarios }, {new: true});
+    const task = await Task.findByIdAndUpdate(id, { name, description, station, zone, operarios, estandarizacion}, {new: true});
 
     res.json({
         task

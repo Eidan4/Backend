@@ -27,7 +27,7 @@ router.get('/:id',[
 ],getIntanceTask);
 
 //preuba
-router.patch('/:id/Hijo/:idhijo', [
+router.patch('/:id', [
    check('id', 'Invalid process ID').isMongoId(),
     validateFields
 ], updatedIntanceHjo);

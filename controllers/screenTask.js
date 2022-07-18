@@ -3,29 +3,56 @@ const { response } = require("express");
 const Screen = require("../models/screenTask");
 
 const createScreen = async (req, res=response) => {
-    const titulo = req.body.titulo;
-    const {descripcion,campo,prioridad}= req.body;
 
-    const screen = new Screen({titulo,descripcion,campo,prioridad});
+    try {
+        const titulo = req.body.titulo;
+        const {descripcion,campo,prioridad}= req.body;
 
-    await screen.save();
+        const screen = new Screen({titulo,descripcion,campo,prioridad});
 
-    const screens = await Screen.findById(screen.id)
-                                .populate('titulo','titulo')
-                                .populate('descripcion','descripcion')
-                                .populate('campo','campo')
-                                .populate('prioridad','prioridad')
+        await screen.save();
 
-    res.json(screens);
+        const screens = await Screen.findById(screen.id)
+                                    .populate('titulo','titulo')
+                                    .populate('descripcion','descripcion')
+                                    .populate('campo','campo')
+                                    .populate('prioridad','prioridad')
+
+        res.json(screens);
+    } catch (error) {
+        res.json({
+            message: error
+        })
+    }
+
+
+    
 }
 
 const getScreen = async (req, res = response)=> {
-    const screen = await Screen.find();
-    res.json(screen);
+    try {
+        const screen = await Screen.find();
+        res.json(screen); 
+    } catch (error) {
+        res.json({
+            message: error
+        })
+    }
+
+    
 }
 
 const updateScreen = async (req, res = response)=>{
     const {id} = req.params;
+
+    if(id){
+        const ids = await Screen.findById(id);
+        if(!ids){
+            return res.status(404).json({
+                msg: 'Invalid ID Screen'
+            });
+        }
+    }
 
     let titulo = req.body.titulo;
     let {descripcion,campo,prioridad} = req.body;
@@ -37,6 +64,16 @@ const updateScreen = async (req, res = response)=>{
 
 const deleteScreen = async (req, res = response)=>{
     const {id} = req.params;
+    
+    if(id){
+        const ids = await Screen.findById(id);
+        if(!ids){
+            return res.status(404).json({
+                msg: 'Invalid ID Screen'
+            });
+        }
+    }
+
     const screen = await Screen.findByIdAndRemove(id);
 
     res.json(screen);

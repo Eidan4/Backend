@@ -26,7 +26,7 @@ const TaskSchema = Schema({
         }
     ],
     estandarizacion:{
-        type: Number,
+        type: Date,
         required: [true, 'Estanderizacion is required']
     }
 });

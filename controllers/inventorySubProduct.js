@@ -41,18 +41,37 @@ const RestarInventario = async(req, res = response) => {
                     res.send("")
                 }
                 let cantidadSub = 0;
-                if( id === "62c3081310e45cf5ff007863" && convertir==="62bf08fba9d907280a599d18"){
-                    cantidadSub = 20 * amount;
+                if(id === "62c3081310e45cf5ff007863"){
+                    if(convertir === "62bf08fba9d907280a599d18"){
+                        return cantidadSub = 20*amount;
+                    }
+                    else if(convertir === "62bf6cba6f7d33da1a76a1c5"){
+                        return cantidadSub = 10*amount
+                    }
                 }
-                else if(id === "62c3081310e45cf5ff007863" && convertir==="62bf6cba6f7d33da1a76a1c5"){
-                    cantidadSub = 10 * amount;
+
+                if(id === "62c3083210e45cf5ff007868"){
+                    if(convertir==="62bf08fba9d907280a599d18"){
+                        return cantidadSub = 15 * amount;
+                    }
+                    else if(convertir==="62bf6cba6f7d33da1a76a1c5"){
+                        return cantidadSub = 25 * amount;
+                    }
                 }
-                else if(id === "62c3083210e45cf5ff007868" && convertir==="62bf08fba9d907280a599d18"){
-                    cantidadSub = 15 * amount;
-                }
-                else if(id === "62c3083210e45cf5ff007868" && convertir==="62bf6cba6f7d33da1a76a1c5"){
-                    cantidadSub = 25 * amount;
-                }
+
+                // if( id === "62c3081310e45cf5ff007863" && convertir==="62bf08fba9d907280a599d18"){
+                //     cantidadSub = 20 * amount;
+                // }
+                // else if(id === "62c3081310e45cf5ff007863" && convertir==="62bf6cba6f7d33da1a76a1c5"){
+                //     cantidadSub = 10 * amount;
+                // }
+                // else if(id === "62c3083210e45cf5ff007868" && convertir==="62bf08fba9d907280a599d18"){
+                //     cantidadSub = 15 * amount;
+                // }
+                // else if(id === "62c3083210e45cf5ff007868" && convertir==="62bf6cba6f7d33da1a76a1c5"){
+                //     cantidadSub = 25 * amount;
+                // }
+
                 console.log(amount)
   
                 let verificar = (cantidadSub>=inventario.amount_stored),
@@ -107,18 +126,38 @@ const updateSubProductAdd = async (req, res = response)=>{
                     res.send("")
                 }
                 let cantidadSub = 0;
-                if( id === "62c3081310e45cf5ff007863" && convertir==="62bf08fba9d907280a599d18"){
-                    cantidadSub = 20 * cantidadplus;
+
+                if(id === "62c3081310e45cf5ff007863"){
+                    if(convertir === "62bf08fba9d907280a599d18"){
+                        return cantidadSub = 20*amount;
+                    }
+                    else if(convertir === "62bf6cba6f7d33da1a76a1c5"){
+                        return cantidadSub = 10*amount
+                    }
                 }
-                else if(id === "62c3081310e45cf5ff007863" && convertir==="62bf6cba6f7d33da1a76a1c5"){
-                    cantidadSub = 10 * cantidadplus;
+
+                if(id === "62c3083210e45cf5ff007868"){
+                    if(convertir==="62bf08fba9d907280a599d18"){
+                        return cantidadSub = 15 * amount;
+                    }
+                    else if(convertir==="62bf6cba6f7d33da1a76a1c5"){
+                        return cantidadSub = 25 * amount;
+                    }
                 }
-                else if(id === "62c3083210e45cf5ff007868" && convertir==="62bf08fba9d907280a599d18"){
-                    cantidadSub = 15 * cantidadplus;
-                }
-                else if(id === "62c3083210e45cf5ff007868" && convertir==="62bf6cba6f7d33da1a76a1c5"){
-                    cantidadSub = 25 * cantidadplus;
-                }
+
+                // if( id === "62c3081310e45cf5ff007863" && convertir==="62bf08fba9d907280a599d18"){
+                //     cantidadSub = 20 * cantidadplus;
+                // }
+                // else if(id === "62c3081310e45cf5ff007863" && convertir==="62bf6cba6f7d33da1a76a1c5"){
+                //     cantidadSub = 10 * cantidadplus;
+                // }
+                // else if(id === "62c3083210e45cf5ff007868" && convertir==="62bf08fba9d907280a599d18"){
+                //     cantidadSub = 15 * cantidadplus;
+                // }
+                // else if(id === "62c3083210e45cf5ff007868" && convertir==="62bf6cba6f7d33da1a76a1c5"){
+                //     cantidadSub = 25 * cantidadplus;
+                // }
+                
                 console.log(cantidadplus)
   
                 let verificar = (cantidadSub>=inventario.amount_stored),

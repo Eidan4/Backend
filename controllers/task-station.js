@@ -11,7 +11,18 @@ const taskStation = require("../models/task-station");
 
 
 const createTaskStation = async (req, res = response)=>{
+    //Order ID
     const {id} = req.params;
+
+    if(id){
+        const ids = await Order.findById(id);
+        if(!ids){
+            return res.status(404).json({
+                msg: 'Invalid ID Order'
+            });
+        }
+    }
+
     const order = await Order.findById(id);
     const prefijo = order.prefijo;
     const prefijoUpperCase = prefijo.toUpperCase();
@@ -53,7 +64,7 @@ const getTaskStation =async(req, res = response) => {
         const ids = await Task1.findById(id);
         if(!ids){
             return res.status(404).json({
-                msg: 'Invalid Task'
+                msg: 'Invalid ID Task'
             });
         }
     }
@@ -99,6 +110,14 @@ const getTaskStation =async(req, res = response) => {
 }
 
 const getTaskTodos = async (req, res= response) => {
+    if(id){
+        const ids = await Task1.findById(id);
+        if(!ids){
+            return res.status(404).json({
+                msg: 'Invalid ID Task'
+            });
+        }
+    }
     const lista = await Task1.find({},{"name":1,"station":1,"zone":1,"operarios":1})
         .populate('station', 'station')
         .populate('zone', 'zone')
@@ -110,6 +129,14 @@ const getTaskTodos = async (req, res= response) => {
 
 const updateTaskStation = async(req, res=response) => {
     const {id} = req.params;
+    if(id){
+        const ids = await TaskStation.findById(id);
+        if(!ids){
+            return res.status(404).json({
+                msg: 'Invalid ID TaskStation'
+            });
+        }
+    }
     let lista = [];
     TaskStation.findById(id).exec((error,inventario)=>{
         const  estaciones = inventario.Task;

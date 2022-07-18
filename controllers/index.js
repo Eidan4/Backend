@@ -11,6 +11,7 @@ const inventory = require('./inventory');
 const productsInventory = require('./productsInventory');
 const inventorySubProduct = require('./inventorySubProduct');
 const taskstation = require('./task-station');
+const screenTask = require('./screenTask');
 
 module.exports = {
     ...auth,
@@ -25,5 +26,6 @@ module.exports = {
     ...inventory,
     ...productsInventory,
     ...inventorySubProduct,
-    ...taskstation
+    ...taskstation,
+    ...screenTask
 }

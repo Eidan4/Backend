@@ -4,27 +4,48 @@ const SubProduct = require('./../models/inventorySubProduct');
 
 //Listo
 const createProductInventory = async (req, res=response) => {
-    const name_product = req.body.name_product;
-    const {amount_stored,amount_consumption,unit_price,inventory_price,
-    inventory_primary,inventory_sub_product} = req.body;
 
-    const createProduct = new ProductsInventory({name_product: name_product, amount_stored: amount_stored, amount_consumption: amount_consumption, unit_price: unit_price, 
-        inventory_price:inventory_price, inventory_primary:inventory_primary, inventory_sub_product: inventory_sub_product});
-    await createProduct.save();
+    try {
+        const name_product = req.body.name_product;
+        const {amount_stored,amount_consumption,unit_price,inventory_price,
+        inventory_primary,inventory_sub_product} = req.body;
+    
+        const createProduct = new ProductsInventory({name_product: name_product, amount_stored: amount_stored, amount_consumption: amount_consumption, unit_price: unit_price, 
+            inventory_price:inventory_price, inventory_primary:inventory_primary, inventory_sub_product: inventory_sub_product});
+        await createProduct.save();
+    
+        const createProducts = await ProductsInventory.findById(createProduct.id)
+            .populate('name_product','name')
+            .populate('amount_stored','name')
+            .populate('amount_consumption','name')
+            .populate('unit_price','name')
+            .populate('inventory_price','name')
+            .populate('inventory_primary','name')
+            .populate('inventory_sub_product','name')
+        res.json(createProducts); 
+    } catch (error) {
+        res.json({
+            message: error
+        })
+    }
 
-    const createProducts = await ProductsInventory.findById(createProduct.id)
-        .populate('name_product','name')
-        .populate('amount_stored','name')
-        .populate('amount_consumption','name')
-        .populate('unit_price','name')
-        .populate('inventory_price','name')
-        .populate('inventory_primary','name')
-        .populate('inventory_sub_product','name')
-    res.json(createProducts);
+
+
+    
 }
 
 const RestarInventarios = async (req, res=response) =>{
+    //Producto de inventario
     const {id} = req.params;
+
+    if(id){
+        const ids = await ProductsInventory.findById(id);
+        if(!ids){
+            return res.status(404).json({
+                msg: 'Invalid ID ProductsInventory'
+            });
+        }
+    }
 
     const search = await ProductsInventory.findById(id).exec((error,inventarios)=>{
         let prima = inventarios.inventory_primary;
@@ -111,6 +132,15 @@ const getProductsInventory = async (req, res=response) => {
 const getProductsInventoryId = async (req, res=response) => {
     const {id} = req.params;
 
+    if(id){
+        const ids = await ProductsInventory.findById(id);
+        if(!ids){
+            return res.status(404).json({
+                msg: 'Invalid ID ProductsInventory'
+            });
+        }
+    }
+
     const products = await ProductsInventory.findById(id);
 
     res.json({products});
@@ -120,11 +150,27 @@ const getProductsInventoryId = async (req, res=response) => {
 //En proceso
 const updateProductInventory = async (req, res=response) => {
     const {id} = req.params;
-    ProductsInventory.findById(id,{products:1}).exec(function (err, inventory) {
-        const idProduct = inventory.products;
-        const inventario = Inventory.findById(idProduct)
-        res.json({idProduct})
-    })
+
+    if(id){
+        const ids = await ProductsInventory.findById(id);
+        if(!ids){
+            return res.status(404).json({
+                msg: 'Invalid ID ProductsInventory'
+            });
+        }
+    }
+
+    try {
+        ProductsInventory.findById(id,{products:1}).exec(function (err, inventory) {
+            const idProduct = inventory.products;
+            const inventario = Inventory.findById(idProduct)
+            res.json({idProduct})
+        }) 
+    } catch (error) {
+        res.json(error)
+    }
+
+    
     
     
 }
