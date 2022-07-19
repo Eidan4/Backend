@@ -1,10 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-<<<<<<< HEAD
- 
-=======
-
->>>>>>> 115ef839652851b0ee7df3888952e0e23791d8d9
 const { dbConnection } = require('../database/config');
 
 class Server {
