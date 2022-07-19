@@ -6,13 +6,13 @@ const createScreen = async (req, res=response) => {
 
     try {
         const titulo = req.body.titulo;
-        const {descripcion,campo,prioridad}= req.body;
+        const {descripcion,screen,prioridad}= req.body;
 
-        const screen = new Screen({titulo,descripcion,prioridad,screen});
+        const screen1 = new Screen({titulo,screen,descripcion,prioridad});
 
-        await screen.save();
+        await screen1.save();
 
-        const screens = await Screen.findById(screen.id)
+        const screens = await Screen.findById(screen1.id)
                                     .populate('titulo','titulo')
                                     .populate('descripcion','descripcion')
                                     .populate('screen','screen')
@@ -23,10 +23,7 @@ const createScreen = async (req, res=response) => {
         res.json({
             message: error
         })
-    }
-
-
-    
+    }   
 }
 
 const getScreen = async (req, res = response)=> {

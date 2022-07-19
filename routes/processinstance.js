@@ -8,7 +8,8 @@ const { validateFields,
 const { getProcessesIntance,
         updatedIntanceDad,
         getIntanceTask,
-        updatedIntanceHjo } = require('../controllers/processinstance');
+        updatedIntanceHjo,
+        validateOperario } = require('../controllers/processinstance');
 
 const { validExistProductByID,
     validExistProcessByPrefijo,
@@ -22,9 +23,9 @@ router.get('/', [
     validateFields
 ], getProcessesIntance );
 
-router.get('/:id',[
+router.get('/loginOperarios/:id',[
     validateFields
-],getIntanceTask);
+],validateOperario);
 
 //preuba
 router.patch('/:id', [
@@ -36,6 +37,11 @@ router.patch('/statusprocess/:id', [
     check('id', 'Invalid process ID').isMongoId(),
     validateFields
 ],updatedIntanceDad);
+
+
+router.get('/:id',[
+    validateFields
+],getIntanceTask);
 
 module.exports = router;
 
