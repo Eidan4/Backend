@@ -1,6 +1,6 @@
 const { response } = require("express");
 
-const Screen = require("../models/screenTask");
+const Screen = require("../models/ScreenTask");
 
 const createScreen = async (req, res=response) => {
 
