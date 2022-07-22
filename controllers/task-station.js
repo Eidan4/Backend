@@ -9,7 +9,7 @@ const ProccessIntance = require('../models/processInstance');
 const { response } = require("express");
 const taskStation = require("../models/task-station");
 
-
+//Sin uso
 const createTaskStation = async (req, res = response)=>{
     //Order ID
     const {id} = req.params;
@@ -54,7 +54,7 @@ const createTaskStation = async (req, res = response)=>{
 
     getStations(mapeo,taskstation.id);
 }
-
+//Importante
 const getTaskStation =async(req, res = response) => {
 
     const {id} = req.params; 
@@ -73,9 +73,6 @@ const getTaskStation =async(req, res = response) => {
     let lista = [];
     let lista2 = [];
 
-    try {
-        // const processintance =    
-        const time = setTimeout(() => {
             ProccessIntance.find({"process.tasks.task": id }).exec((error,inventario)=>{
                 if(inventario.length == 0){
                     return res.status(404).json("No se encontro ninguna proceso intance con esta tarea")
@@ -98,32 +95,21 @@ const getTaskStation =async(req, res = response) => {
                         }  
                 }
             });
-
-        }, 1000);
-
-
     }
-    catch (error) {
-      res.json("Error no se encontro")  
-    }
-    
-}
 
 const getTaskTodos = async (req, res= response) => {
-    if(id){
-        const ids = await Task1.findById(id);
-        if(!ids){
-            return res.status(404).json({
-                msg: 'Invalid ID Task'
-            });
-        }
-    }
-    const lista = await Task1.find({},{"name":1,"station":1,"zone":1,"operarios":1})
+
+    try {
+        const lista = await Task1.find({},{"name":1,"station":1,"zone":1,"operarios":1})
         .populate('station', 'station')
         .populate('zone', 'zone')
         .populate('operarios', 'name')
         .populate('estandarizacion','estandarizacion')
     res.json(lista)
+    } catch (error) {
+        res.json("Ocurrio un error con las tareas");
+    }
+    
     
 }
 
@@ -140,6 +126,7 @@ const updateTaskStation = async(req, res=response) => {
     let lista = [];
     TaskStation.findById(id).exec((error,inventario)=>{
         const  estaciones = inventario.Task;
+        res.json(estaciones);
         for (let i = 0; i < estaciones.length; i++){
             Task1.findById(estaciones[i]).exec((error,inventario)=>{
                 let total = inventario;
@@ -165,34 +152,6 @@ const updateTaskStation = async(req, res=response) => {
             })
         }
     })
-
-
-    //     for(let i=0; i<mapeo.length; i++){
-    //         let buscar = mapeo[i];
-    //         let tareas = Task1.findById(buscar, function(err,inventario){
-    //             const respuesta = inventario.station;
-    //             Station.findById(respuesta).exec((error,inventario)=>{
-    //                 let estacion = inventario;
-    //                 lista.push(estacion);
-    //                 if(mapeo.length === lista.length){
-    //                     TaskStation.findById(id).exec((error,inventario)=>{
-    //                         const Update = {Station: inventario.Station.push(lista)};
-    //                         TaskStation.findByIdAndUpdate(id,Update).exec((error,inventario)=>{
-    //                             res.json(inventario)
-    //                         })
-    //                     })
-    //                 } 
-    //             }) 
-    //         })
-        
-    // }
-
-// TaskStation.findById(id).exec((error,inventario)=>{
-        //     const Update = {Station: inventario.Station.push(lista)};
-        //     TaskStation.findByIdAndUpdate(id,Update).exec((error,inventario)=>{
-        //         res.json(inventario)
-        //     })
-        // })
 }
 
 
