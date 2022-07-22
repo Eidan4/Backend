@@ -12,7 +12,7 @@ const getProcessesIntance = async(req, res = response) => {
     });
 }
 
-//Traer el processIntance por el id
+//Traer la tarea de un ProcessIntance por el Id de la tarea
 const getIntanceTask = async (req, res=response) => {
      const {id}=req.params;
 
@@ -60,6 +60,7 @@ const updatedIntanceDad = async (req, res = response) => {
     }
 }
 
+//Ver solo un processIntance por el ID
 const getProcessesIntanceId = async (req, res = response) => {
     const {id} = req.params;
     const processintance = await ProccessIntance.findById(id);
@@ -154,7 +155,7 @@ const restaFecha = async (req, res = response) => {
     }) 
 }
 
-//ID de la tarea
+//ID de la tarea (Se necesita id del ProcessIntance y idhijo es id de la tarea que quiere actualizar)
 const validateOperario = async (req, res = response) => {
     const {id} = req.params;
     const documents = req.body.documents;
