@@ -41,17 +41,16 @@ const updatedIntanceDad = async (req, res = response) => {
    
     try {
         const {id}= req.params;
+        let {status_product}= req.body; 
 
         if(id){
             const ids = await ProccessIntance.findById(id);
             if(!ids){
                 return res.status(404).json({
-                    msg: 'Invalid ID ProductsInventory'
+                    msg: 'Invalid ID ProcessIntance'
                 });
             }
         }
-
-        let {status_product}= req.body; 
         const processintancedad = await ProccessIntance.findByIdAndUpdate(id,{status_product},{new:true})
             .populate('status_product', 'name');
         res.json(processintancedad); 
@@ -81,7 +80,7 @@ const updatedIntanceHjoProceso = async (req, res = response) => {
     }
 
     if(idhijo){
-        const idhijos = ProccessIntance.find({"process.tasks._id": id }, {"process.tasks.$": true});
+        const idhijos = ProccessIntance.find({"process.tasks._id": idhijo }, {"process.tasks.$": true});
         if(!idhijos){
             return res.status(404).json({
                 msg: "No se encontro esa tarea en ningun ProcessIntance"
@@ -94,8 +93,15 @@ const updatedIntanceHjoProceso = async (req, res = response) => {
             res.json({msg: error})
         }
         ProccessIntance.findOneAndUpdate({"_id":id},{$set:{"process.tasks.$[task].start_date":new Date()}},{arrayFilters:[{"task._id":{$eq:idhijo}}]}).exec((error,inventario)=>{
-            res.json(inventario)
-        })
+            if(error){
+                console.log(error);
+            }
+            if(inventario == null){
+                res.json("No se encuentra el ProcessInstance");
+            }else{
+                res.json(inventario);
+            }
+            })
     })
 }
 
@@ -113,11 +119,11 @@ const updatedIntanceHjoFinalizo = async (req, res = response) => {
     }
 
     if(idhijo){
-        const idhijos = ProccessIntance.find({"process.tasks._id": id }, {"process.tasks.$": true});
+        const idhijos = ProccessIntance.find({"process.tasks._id": idhijo }, {"process.tasks.$": true});
         if(!idhijos){
             return res.status(404).json({
                 msg: "No se encontro esa tarea en ningun ProcessIntance"
-            })
+            });
         }
     }
 
@@ -126,7 +132,14 @@ const updatedIntanceHjoFinalizo = async (req, res = response) => {
             res.json({msg: error})
         }
         ProccessIntance.findOneAndUpdate({"_id":id},{$set:{"process.tasks.$[task].finish_date":new Date()}},{arrayFilters:[{"task._id":{$eq:idhijo}}]}).exec((error,inventario)=>{
-            res.json(inventario);
+            if(error){
+                console.log(error);
+            }
+            if(inventario == null){
+                res.json("No se encuentra el ProcessInstance");
+            }else{
+                res.json(inventario);
+            }
         })
         
     })
@@ -136,7 +149,25 @@ const updatedIntanceHjoFinalizo = async (req, res = response) => {
 const restaFecha = async (req, res = response) => {
     const {id}=req.params;    
     const {idhijo} = req.params;
-    let lista1 = [];
+    
+    if(id){
+        const ids = ProccessIntance.findById(id);
+        if(!ids){
+            return res.status(404).json({
+                msg: 'No se encuentra el ProcessInstance'
+            })
+        }
+    }
+
+    if(idhijo){
+        const idhijos = ProccessIntance.find({"process.tasks._id": idhijo }, {"process.tasks.$": true});
+        if(!idhijos){
+            return res.status(404).json({
+                msg: "No se encontro esa tarea en ningun ProcessIntance"
+            })
+        }
+    }
+
     const processintance = await ProccessIntance.find(
         {"process.tasks._id": idhijo }, {"process.tasks.$": true} 
     ).exec((error,lista)=>{
@@ -148,7 +179,14 @@ const restaFecha = async (req, res = response) => {
                 let end = status[j].finish_date;
                 let result = new Date(end.getTime()-start.getTime());
                 ProccessIntance.findOneAndUpdate({"_id":id},{$set:{"process.tasks.$[task].result_date":result}},{arrayFilters:[{"task._id":{$eq:idhijo}}]}).exec((error,inventario)=>{
-                    res.json(inventario);
+                    if(error){
+                        console.log(error);
+                    }
+                    if(inventario == null){
+                        res.json("No se encuentra el ProcessInstance");
+                    }else{
+                        res.json(inventario);
+                    }
                 })
             }
         }
