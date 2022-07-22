@@ -12,7 +12,6 @@ const getProcessesIntance = async(req, res = response) => {
     });
 }
 
-
 //Traer el processIntance por el id
 const getIntanceTask = async (req, res=response) => {
      const {id}=req.params;
@@ -61,16 +60,98 @@ const updatedIntanceDad = async (req, res = response) => {
     }
 }
 
-//Ver como hacer la actualizacion de la start_finish ---> Todavia no esta hecho
+const getProcessesIntanceId = async (req, res = response) => {
+    const {id} = req.params;
+    const processintance = await ProccessIntance.findById(id);
+    res.json(processintance);
+}
 
-const updatedIntanceHjo = async (req, res = response) => {
+//Listo (Se necesita id del ProcessIntance y idhijo es id de la tarea que quiere actualizar) solo lo pone en Proceso
+const updatedIntanceHjoProceso = async (req, res = response) => {
     const {id}=req.params;    
-    const {process} = req.body;
-    const processintance = await ProccessIntance.findOneAndUpdate(
-        {"process.tasks._id": id },process,{new:true}
-    )
+    const {idhijo} = req.params;
+    if(id){
+        const ids = ProccessIntance.findById(id);
+        if(!ids){
+            return res.status(404).json({
+                msg: 'No se encuentra el ProcessInstance'
+            })
+        }
+    }
 
-    res.json(processintance)
+    if(idhijo){
+        const idhijos = ProccessIntance.find({"process.tasks._id": id }, {"process.tasks.$": true});
+        if(!idhijos){
+            return res.status(404).json({
+                msg: "No se encontro esa tarea en ningun ProcessIntance"
+            })
+        }
+    }
+
+    const processintance1 = await ProccessIntance.findOneAndUpdate({"_id":id},{$set:{"process.tasks.$[task].start_finish":"En Proceso"}},{arrayFilters:[{"task._id":{$eq:idhijo}}]}).exec((error,inventario)=>{
+        if(error){
+            res.json({msg: error})
+        }
+        ProccessIntance.findOneAndUpdate({"_id":id},{$set:{"process.tasks.$[task].start_date":new Date()}},{arrayFilters:[{"task._id":{$eq:idhijo}}]}).exec((error,inventario)=>{
+            res.json(inventario)
+        })
+    })
+}
+
+//Listo (Se necesita id del ProcessIntance y idhijo es id de la tarea que quiere actualizar) solo lo pone en Finalizar
+const updatedIntanceHjoFinalizo = async (req, res = response) => {
+    const {id}=req.params;    
+    const {idhijo} = req.params;
+    if(id){
+        const ids = ProccessIntance.findById(id);
+        if(!ids){
+            return res.status(404).json({
+                msg: 'No se encuentra el ProcessInstance'
+            })
+        }
+    }
+
+    if(idhijo){
+        const idhijos = ProccessIntance.find({"process.tasks._id": id }, {"process.tasks.$": true});
+        if(!idhijos){
+            return res.status(404).json({
+                msg: "No se encontro esa tarea en ningun ProcessIntance"
+            })
+        }
+    }
+
+    const processintance1 = await ProccessIntance.findOneAndUpdate({"_id":id},{$set:{"process.tasks.$[task].start_finish":"Finalizado"}},{arrayFilters:[{"task._id":{$eq:idhijo}}]}).exec((error,inventario)=>{
+        if(error){
+            res.json({msg: error})
+        }
+        ProccessIntance.findOneAndUpdate({"_id":id},{$set:{"process.tasks.$[task].finish_date":new Date()}},{arrayFilters:[{"task._id":{$eq:idhijo}}]}).exec((error,inventario)=>{
+            res.json(inventario);
+        })
+        
+    })
+}
+
+//Resta las fechas
+const restaFecha = async (req, res = response) => {
+    const {id}=req.params;    
+    const {idhijo} = req.params;
+    let lista1 = [];
+    const processintance = await ProccessIntance.find(
+        {"process.tasks._id": idhijo }, {"process.tasks.$": true} 
+    ).exec((error,lista)=>{
+        for(let i=0; i<lista.length; i++){
+            let status = lista[i].process.tasks;
+            for(let j=0; j<status.length; j++) {
+                let start = status[j].start_date;
+                let start_ =start.getTime();
+                let end = status[j].finish_date;
+                let result = new Date(end.getTime()-start.getTime());
+                ProccessIntance.findOneAndUpdate({"_id":id},{$set:{"process.tasks.$[task].result_date":result}},{arrayFilters:[{"task._id":{$eq:idhijo}}]}).exec((error,inventario)=>{
+                    res.json(inventario);
+                })
+            }
+        }
+    }) 
 }
 
 //ID de la tarea
@@ -79,7 +160,6 @@ const validateOperario = async (req, res = response) => {
     const documents = req.body.documents;
     let lista = [];
     let lista2 = [];
-
     if(id){
         const ids = await Task.findById(id);
         if(!ids){
@@ -109,12 +189,15 @@ const validateOperario = async (req, res = response) => {
     }
 }
 
-    
+
 
 module.exports = {
-    updatedIntanceHjo,
+    updatedIntanceHjoProceso,
+    updatedIntanceHjoFinalizo,
     getProcessesIntance,
     updatedIntanceDad,
     getIntanceTask,
-    validateOperario
+    validateOperario,
+    restaFecha,
+    getProcessesIntanceId
 }

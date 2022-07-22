@@ -27,8 +27,18 @@ const processInstanceSchema = new Schema({
                     type: String,
                     default: 'No se ha iniciado la tarea'
                 },
-                start_date: Date,
-                finish_date: Date,
+                start_date:{
+                    type:Date,
+                    required:false
+                },
+                finish_date:{
+                    type:Date,
+                    required:false
+                },
+                result_date:{
+                    type:Date,
+                    required:false
+                },
                 operator: {
                     type: Schema.Types.ObjectId,
                     ref: 'User'

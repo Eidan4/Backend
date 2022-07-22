@@ -8,8 +8,11 @@ const { validateFields,
 const { getProcessesIntance,
         updatedIntanceDad,
         getIntanceTask,
-        updatedIntanceHjo,
-        validateOperario } = require('../controllers/processinstance');
+        updatedIntanceHjoProceso,
+        updatedIntanceHjoFinalizo,
+        validateOperario,
+        restaFecha,
+        getProcessesIntanceId } = require('../controllers/processinstance');
 
 const { validExistProductByID,
     validExistProcessByPrefijo,
@@ -27,21 +30,34 @@ router.get('/loginOperarios/:id',[
     validateFields
 ],validateOperario);
 
-//preuba
-router.patch('/:id', [
+router.get('/:id',[
+    validateFields
+],getIntanceTask);
+
+router.get('/processInstance/:id',[
+    validateFields
+],getProcessesIntanceId);
+
+//Listo
+router.patch('/:id/hijo/:idhijo', [
    check('id', 'Invalid process ID').isMongoId(),
     validateFields
-], updatedIntanceHjo);
+], updatedIntanceHjoProceso);
+
+router.patch('/:id/hijo/:idhijo/finalizar',[
+    check('id', 'Invalid process ID').isMongoId(),
+    validateFields
+],updatedIntanceHjoFinalizo);
 
 router.patch('/statusprocess/:id', [
     check('id', 'Invalid process ID').isMongoId(),
     validateFields
 ],updatedIntanceDad);
 
-
-router.get('/:id',[
+router.patch('/resta/:id/hijo/:idhijo',[
+    check('id', 'Invalid process ID').isMongoId(),
     validateFields
-],getIntanceTask);
+],restaFecha)
 
 module.exports = router;
 
